@@ -5,9 +5,13 @@ namespace DownTheRabbitHole.DomainStuff
 {
     class SaleAggregate : AggregateRoot
     {
-        internal void AddProductToBasket(Guid productId, int quantity)
+        public void AddProductToBasket(
+            Guid productId, IProductCatalogue catalogue)
         {
-            
+            decimal itemPrice = catalogue.GetItemPrice(productId);
+            Emit(new BasketLineAdded(Id, productId, itemPrice, quantity: 1));
         }
+
+        
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DownTheRabbitHole.DomainStuff
 {
-    interface IProductCatalogue
+    public interface IProductCatalogue
     {
         decimal GetItemPrice(Guid productId);
     }

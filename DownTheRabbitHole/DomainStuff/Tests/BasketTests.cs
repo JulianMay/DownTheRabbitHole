@@ -12,15 +12,15 @@ namespace DownTheRabbitHole.DomainStuff.Tests
         public void AddingProductToBasket_GetsPricesFromProductCatalogue()
         {
             var productId = Guid.NewGuid(); 
-            var productCatalogueMock = new Mock<IProductCatalogue>();
-            productCatalogueMock.Setup(x => x.GetItemPrice(productId)).Returns(89.95m);
+            var mock = new Mock<IProductCatalogue>();
+            mock.Setup(x => x.GetItemPrice(productId)).Returns(89.95m);
             var sale = new SaleAggregate();
 
-            sale.AddProductToBasket(productId, quantity: 2);
+            sale.AddProductToBasket(productId, catalogue: mock.Object);
 
-            productCatalogueMock.VerifyAll();
+            mock.VerifyAll();
             CollectionAssert.Contains(sale.GetUnpersistedEvents(), 
-                new BasketLineAdded(sale.Id, productId, linePrice: 179.90m, quantity: 2));
+                new BasketLineAdded(sale.Id, productId, linePrice: 179.90m, quantity: 1));
         }
     }
 }

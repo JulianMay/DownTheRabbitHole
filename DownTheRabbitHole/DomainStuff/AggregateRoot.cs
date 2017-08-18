@@ -16,5 +16,10 @@ namespace DownTheRabbitHole.DomainStuff
         {
             _unpersistedEvents.Add(domainEvent);
         }
+
+        internal void ApplyEvents(IEnumerable<object> events)
+        {
+
+        }
     }
 }
