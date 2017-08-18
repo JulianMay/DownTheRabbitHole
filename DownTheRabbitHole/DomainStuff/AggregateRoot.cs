@@ -19,7 +19,7 @@ namespace DownTheRabbitHole.DomainStuff
 
         //... and events are applied
         private Dictionary<Type, Action<object>> _eventAppliers;
-        protected void RegisterEventAppliers(IEnumerable<EventHandle> handles)
+        protected void RegisterEventAppliers(params EventHandle[] handles)
         {
             _eventAppliers = handles.ToDictionary(x => x.EventType, x => x.Handle);
         }
