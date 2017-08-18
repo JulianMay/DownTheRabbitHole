@@ -8,12 +8,17 @@ namespace DownTheRabbitHole.DomainStuff
     {
         //Aggregate root's has a unique ID
         public string Id { get; }
+        protected AggregateRoot(string id)
+        {
+            Id = id;
+        }
 
         //events are emitted
         private List<object> _emittedEvents = new List<object>();
         public IEnumerable<object> GetEmittedEvents(){ return _emittedEvents; }
         protected void Emit(object domainEvent)
         {
+            ApplyEvent(domainEvent);
             _emittedEvents.Add(domainEvent);
         }
 
@@ -27,10 +32,15 @@ namespace DownTheRabbitHole.DomainStuff
         {
             foreach(var @event in events)
             {
-                Action<object> apply;
-                if (_eventAppliers.TryGetValue(@event.GetType(), out apply))
-                    apply(@event);
+                ApplyEvent(@event);
             }
+        }
+
+        private void ApplyEvent(object @event)
+        {
+            Action<object> apply;
+            if (_eventAppliers.TryGetValue(@event.GetType(), out apply))
+                apply(@event);
         }
     }
 

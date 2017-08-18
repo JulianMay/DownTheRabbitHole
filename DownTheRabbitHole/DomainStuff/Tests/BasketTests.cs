@@ -14,7 +14,7 @@ namespace DownTheRabbitHole.DomainStuff.Tests
             var itemId = Guid.NewGuid(); 
             var mock = new Mock<IProductCatalogue>();
             mock.Setup(x => x.GetItemPrice(itemId)).Returns(89.95m);
-            var sale = new SaleAggregate();
+            var sale = new SaleAggregate("someId");
 
             sale.AddProductToBasket(itemId, catalogue: mock.Object);
 
@@ -30,7 +30,7 @@ namespace DownTheRabbitHole.DomainStuff.Tests
             var itemId = Guid.NewGuid();
             var mock = new Mock<IProductCatalogue>();
             mock.Setup(x => x.GetItemPrice(itemId)).Returns(89.95m);            
-            var sale = new SaleAggregate();
+            var sale = new SaleAggregate("someId");
             sale.ApplyEvents(new[]{
                 new BasketLineAdded(sale.Id, 1, itemId, linePrice: 89.95m, quantity: 1)
             });
@@ -41,7 +41,7 @@ namespace DownTheRabbitHole.DomainStuff.Tests
                 new BasketLineQuantityChanged(sale.Id, lineNumber: 1,
                 linePrice: 179.90m, quantity: 2)
             );
-        }
+        }        
 
 
         private void AssertEventsEmitted(AggregateRoot agg, params object[] eventsEmitted)

@@ -5,11 +5,14 @@ namespace DownTheRabbitHole.DomainStuff
 {
     class SaleAggregate : AggregateRoot
     {
-        public SaleAggregate() : base()
+        private Basket _basket;
+
+        public SaleAggregate(string id) : base(id)
         {
+            _basket = new Basket(id);
             RegisterEventAppliers(
-                EventHandle.For<BasketLineAdded>(Apply),
-                EventHandle.For<BasketLineQuantityChanged>(Apply)
+                EventHandle.For<BasketLineAdded>(_basket.Apply),
+                EventHandle.For<BasketLineQuantityChanged>(_basket.Apply)
                 );
         }
 
@@ -17,17 +20,8 @@ namespace DownTheRabbitHole.DomainStuff
             Guid productId, IProductCatalogue catalogue)
         {
             decimal itemPrice = catalogue.GetItemPrice(productId);
-            Emit(new BasketLineAdded(Id, 1, productId, itemPrice, quantity: 1));
-        }
-
-        private void Apply(BasketLineAdded ev)
-        {
-
-        }
-
-        private void Apply(BasketLineQuantityChanged ev)
-        {
-
+            var outcome = _basket.AddProduct(productId, itemPrice);
+            Emit(outcome);
         }
     }
 }
