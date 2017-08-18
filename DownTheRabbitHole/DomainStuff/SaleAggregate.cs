@@ -9,7 +9,7 @@ namespace DownTheRabbitHole.DomainStuff
             Guid productId, IProductCatalogue catalogue)
         {
             decimal itemPrice = catalogue.GetItemPrice(productId);
-            Emit(new BasketLineAdded(Id, productId, itemPrice, quantity: 1));
+            Emit(new BasketLineAdded(Id, 1, productId, itemPrice, quantity: 1));
         }
 
         

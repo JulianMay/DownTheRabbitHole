@@ -11,16 +11,42 @@ namespace DownTheRabbitHole.DomainStuff.Tests
         [Test]
         public void AddingProductToBasket_GetsPricesFromProductCatalogue()
         {
-            var productId = Guid.NewGuid(); 
+            var itemId = Guid.NewGuid(); 
             var mock = new Mock<IProductCatalogue>();
-            mock.Setup(x => x.GetItemPrice(productId)).Returns(89.95m);
+            mock.Setup(x => x.GetItemPrice(itemId)).Returns(89.95m);
             var sale = new SaleAggregate();
 
-            sale.AddProductToBasket(productId, catalogue: mock.Object);
+            sale.AddProductToBasket(itemId, catalogue: mock.Object);
 
             mock.VerifyAll();
-            CollectionAssert.Contains(sale.GetUnpersistedEvents(), 
-                new BasketLineAdded(sale.Id, productId, linePrice: 179.90m, quantity: 1));
+            AssertEventsEmitted(sale,
+                new BasketLineAdded(sale.Id, lineNumber: 1, 
+                productId: itemId, linePrice: 89.95m, quantity: 1));
+        }
+
+        [Test]
+        public void AddingTheSameProductSeveralTimes_UpdatesTheRespectiveBasketLine()
+        {
+            var itemId = Guid.NewGuid();
+            var mock = new Mock<IProductCatalogue>();
+            mock.Setup(x => x.GetItemPrice(itemId)).Returns(89.95m);            
+            var sale = new SaleAggregate();
+            sale.ApplyEvents(new[]{
+                new BasketLineAdded(sale.Id, 1, itemId, linePrice: 89.95m, quantity: 1)
+            });
+
+            sale.AddProductToBasket(itemId, mock.Object);
+
+            AssertEventsEmitted(sale,
+                new BasketLineQuantityChanged(sale.Id, lineNumber: 1,
+                linePrice: 179.90m, quantity: 2)
+            );
+        }
+
+
+        private void AssertEventsEmitted(AggregateRoot agg, params object[] eventsEmitted)
+        {
+            CollectionAssert.AreEquivalent(agg.GetUnpersistedEvents(), eventsEmitted);
         }
     }
 }
