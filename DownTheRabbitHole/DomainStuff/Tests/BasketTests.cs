@@ -46,7 +46,7 @@ namespace DownTheRabbitHole.DomainStuff.Tests
 
         private void AssertEventsEmitted(AggregateRoot agg, params object[] eventsEmitted)
         {
-            CollectionAssert.AreEquivalent(agg.GetUnpersistedEvents(), eventsEmitted);
+            CollectionAssert.AreEquivalent(agg.GetEmittedEvents(), eventsEmitted);
         }
     }
 }

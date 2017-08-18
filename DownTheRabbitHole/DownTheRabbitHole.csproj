@@ -60,6 +60,7 @@
     <Compile Include="DomainStuff\IProductCatalogue.cs" />
     <Compile Include="DomainStuff\SaleAggregate.cs" />
     <Compile Include="DomainStuff\Tests\BasketTests.cs" />
+    <Compile Include="EventHandle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
