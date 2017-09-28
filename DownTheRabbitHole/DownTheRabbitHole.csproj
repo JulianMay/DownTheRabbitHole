@@ -59,16 +59,18 @@
     <Compile Include="DomainStuff\AggregateRoot.cs" />
     <Compile Include="DomainStuff\Basket.cs" />
     <Compile Include="DomainStuff\IProductCatalogue.cs" />
+    <Compile Include="DomainStuff\IRepository.cs" />
     <Compile Include="DomainStuff\SaleAggregate.cs" />
+    <Compile Include="DomainStuff\SaleService.cs" />
     <Compile Include="DomainStuff\Tests\BasketTests.cs" />
     <Compile Include="EventHandle.cs" />
+    <Compile Include="IHandle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Commands\" />
     <Folder Include="QueryStuff\" />
   </ItemGroup>
   <ItemGroup>

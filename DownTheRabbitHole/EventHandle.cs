@@ -15,7 +15,8 @@ namespace DownTheRabbitHole
 
         public static EventHandle For<TEvent>(Action<TEvent> handle)
         {
-            return new EventHandle(typeof(TEvent), (ev) => handle((TEvent)ev));
+            return new EventHandle(typeof(TEvent), 
+                (ev) => handle((TEvent)ev));
         }
     }
 }

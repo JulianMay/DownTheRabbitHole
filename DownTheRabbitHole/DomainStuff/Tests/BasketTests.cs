@@ -32,14 +32,14 @@ namespace DownTheRabbitHole.DomainStuff.Tests
             mock.Setup(x => x.GetItemPrice(itemId)).Returns(89.95m);            
             var sale = new SaleAggregate("someId");
             sale.ApplyEvents(new[]{
-                new BasketLineAdded(sale.Id, 1, itemId, linePrice: 89.95m, quantity: 1)
-            });
+                new BasketLineAdded
+                    (sale.Id, 1, itemId, linePrice: 89.95m, quantity: 1)});
 
             sale.AddProductToBasket(itemId, mock.Object);
 
             AssertEventsEmitted(sale,
-                new BasketLineQuantityChanged(sale.Id, lineNumber: 1,
-                linePrice: 179.90m, quantity: 2)
+                new BasketLineQuantityChanged
+                    (sale.Id, lineNumber: 1,linePrice: 179.90m, quantity: 2)
             );
         }        
 
